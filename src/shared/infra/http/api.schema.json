@@ -1,0 +1,471 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "Bolder Plate Node",
+    "description": "Bolder Plate Node",
+    "termsOfService": "http://api_url/terms/"
+  },
+  "host": "bolder.swagger.io",
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "Authorization",
+      "description": "autorizar o acesso a api"
+    },
+    {
+      "name": "Categotia",
+      "description": "cadastro e inativar categoria"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/api/Authorization/v1/token": {
+      "post": {
+        "tags": [
+          "Authorization"
+        ],
+        "description": "Autentique o usuário na API gerando um token JWT",
+        "operationId": "realizar login api",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Authorization"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticatedAuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Invalid parameters",
+                  "code": "400",
+                  "error": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Categotia/v1/salvar": {
+      "post": {
+        "tags": [
+          "Categotia"
+        ],
+        "description": "Envie a autorização no cabeçalho HTTP no formato: 'Authorization' + '=' + Bearer + Token",
+        "operationId": "salvarCategoria",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Categoria"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Categoria"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "error",
+                  "error": "Categoria já cadastrada!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Token inválido",
+                  "code": "401",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Categotia/v1/inativar/{codigoExterno}": {
+      "delete": {
+        "tags": [
+          "Categotia"
+        ],
+        "sumary": "Inativar a categoria pelo código externo",
+        "description": "Envie a autorização no cabeçalho HTTP no formato: 'Authorization' + '=' + Bearer + Token",
+        "operationId": "inativarCategoria",
+        "parameters": [
+          {
+            "name": "codigoExterno",
+            "in": "path",
+            "description": "Id externo da categoria que deve ser inativado",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "idExterno": {
+                      "type": "string",
+                      "example": "15634"
+                    },
+                    "descricao": {
+                      "type": "string",
+                      "example": "Categoria teste"
+                    },
+                    "inativo": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "ordem": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "message": "Categoria não encontrada!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Token inválido",
+                  "code": "401",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Categotia/v1/ativar/{codigoExterno}": {
+      "get": {
+        "tags": [
+          "Categotia"
+        ],
+        "sumary": "Ativar a categoria pelo código externo",
+        "description": "Envie a autorização no cabeçalho HTTP no formato: 'Authorization' + '=' + Bearer + Token",
+        "operationId": "ativarCateria",
+        "parameters": [
+          {
+            "name": "codigoExterno",
+            "in": "path",
+            "description": "Id externo da categoria que deve ser inativado",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "idExterno": {
+                      "type": "string",
+                      "example": "15634"
+                    },
+                    "descricao": {
+                      "type": "string",
+                      "example": "Categoria teste"
+                    },
+                    "inativo": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "ordem": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "message": "Categoria não encontrada!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Token inválido",
+                  "code": "401",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Categotia/v1/listar": {
+      "get": {
+        "tags": [
+          "Categotia"
+        ],
+        "sumary": "Lista as categorias cadastradas.",
+        "description": "Envie a autorização no cabeçalho HTTP no formato: 'Authorization' + '=' + Bearer + Token",
+        "operationId": "listarCateria",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "idExterno": {
+                        "type": "string",
+                        "example": "15634"
+                      },
+                      "descricao": {
+                        "type": "string",
+                        "example": "Categoria teste"
+                      },
+                      "inativo": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "ordem": {
+                        "type": "number",
+                        "example": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "status": "error",
+                  "message": "Categoria não encontrada!"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Token inválido",
+                  "code": "401",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Authorization": {
+        "type": "object",
+        "properties": {
+          "codigo_integracao": {
+            "type": "string",
+            "example": "0fd519bd-0a6a-40c7-90b5-e5fa65dedd24"
+          },
+          "usuario": {
+            "type": "string",
+            "example": "john@mail.com",
+            "required": true
+          },
+          "senha": {
+            "type": "string",
+            "example": "12345#@$$%",
+            "required": true
+          }
+        },
+        "required": [
+          "codigo_integracao",
+          "usuario",
+          "senha"
+        ]
+      },
+      "Categoria": {
+        "type": "object",
+        "properties": {
+          "idCategoria": {
+            "type": "number",
+            "example": 1,
+            "description": "Campo só será apresentado no retorno de sucesso do cadastro"
+          },
+          "idExterno": {
+            "type": "string",
+            "example": "15633",
+            "required": true
+          },
+          "descricao": {
+            "type": "string",
+            "example": "Categoria teste",
+            "required": true
+          },
+          "ordem": {
+            "type": "number",
+            "example": 1,
+            "required": true
+          },
+          "inativo": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": [
+          "idExterno",
+          "descricao",
+          "ordem"
+        ]
+      },
+      "AuthenticatedAuthResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTQxMzc3OTcsImV4cCI6MTYxNDIyNDE5Nywic3ViIjoiMSJ9.R81xdYoigeNNMjdlMTtHSbTzTfFle3mTYUYiKtyfjco"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "number"
+          },
+          "error": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "documentation": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

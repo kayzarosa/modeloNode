@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  banco_docker:
+    image: postgres
+    container_name: banco_docker
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=vcquota-it
+    volumes:
+      - pgdata:/data/postgres
+  app:
+    build: .
+    container_name: vcquota_api
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/app
+    links: 
+      - banco_docker
+    depends_on:
+      - banco_docker
+
+volumes:
+  pgdata:
+    driver: local
+    
